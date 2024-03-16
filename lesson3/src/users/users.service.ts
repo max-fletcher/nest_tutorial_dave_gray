@@ -33,13 +33,13 @@ export class UsersService {
         "email": "Lucio_Hettinger@annie.ca",
         "role": "ADMIN",
     }
-  ],
+  ]
 
   findAll(role?: 'INTERN' | 'ENGINEER' | 'ADMIN'){
     if(role){
       return this.users.filter(user => user.role === role)
     }
-    return { this.users }
+    return { users: this.users }
   }
 
   findOne(id: number){
@@ -51,7 +51,7 @@ export class UsersService {
     const usersByHighestId = [...this.users].sort((a,b) => b.id - a.id)
 
     const newUser = {
-      id: usersByHighestId[0].id,
+      id: (usersByHighestId[0].id + 1),
       ...user
     }
 
