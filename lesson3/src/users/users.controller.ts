@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users') // '/users' routes
 export class UsersController {
@@ -26,13 +28,20 @@ export class UsersController {
   @Get(':id') // GET /users/:id
   // the @Param decorator gets the route param named "id"(as defined in brackets) and stored in a var called "id" which is a string type.
   // If you said " @Param('id') kek: 'string' ", it would get the param called 'id' ans store it in a var called 'kek'
-  findOne(@Param('id') id: string){
-    return this.usersService.findOne(parseInt(id))
+  // The ParseIntPipe is a pipe(a middleware that either transforms data, or validates data. See docs) that converts string/other type to integer. 
+  // It is accepted as the 2nd param to @Param decorator.
+  findOne(@Param('id', ParseIntPipe) id: number){
+    return this.usersService.findOne(id)
   }
 
   @Post() // POST /users
   // the @Body decorator defines it accepts a request body. The body is stored in a variable called body(type-hinted).
-  store(@Body() body: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}){
+  // We are also swapping the type definition(i.e @Body(ValidationPipe) body: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'})
+  // with a dto here, which is defined as per the imported class at the top.
+  // The @Body decorator is accepting a ValidationPipe object that instructs the DTO to validate the data before it reaches this controller
+  // If the validation fails, it will throw an error response
+  // The whitelist:true filters out extra data that is passed along with the data that is validated (i.e like $request->validated() in Laravel)
+  store(@Body(new ValidationPipe({whitelist: true})) body: CreateUserDto){
     return this.usersService.store(body)
   }
 
@@ -52,14 +61,23 @@ export class UsersController {
   // the @Param decorator gets the route param named "id"(as defined in brackets) and stored in a var called "id" which is a string type.
   // If you said " @Param('id') kek: 'string' ", it would get the param called 'id' ans store it in a var called 'kek'
   // the @Body defines it accepts a request body. The body is stored in a variable called body(type-hinted).
-  update(@Param('id') id: string, @Body() body: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}){
-    return this.usersService.update(parseInt(id), body)
+  // The ParseIntPipe is a pipe(a middleware that either transforms data, or validates data. See docs) that converts string/other type to integer. 
+  // It is accepted as the 2nd param to @Param decorator.
+  // We are also swapping the type definition(i.e @Body() body: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'})
+  // with a dto here, which is defined as per the imported class at the top
+  // The @Body decorator is accepting a ValidationPipe object that instructs the DTO to validate the data before it reaches this controller
+  // If the validation fails, it will throw an error response
+  // The whitelist:true filters out extra data that is passed along with the data that is validated (i.e like $request->validated() in Laravel)
+  update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe({whitelist: true})) body: UpdateUserDto){
+    return this.usersService.update(id, body)
   }
 
   @Delete(':id') // DELETE /users/:id
   // the @Param decorator gets the route param named "id"(as defined in brackets) and stored in a var called "id" which is a string type.
   // If you said " @Param('id') kek: 'string' ", it would get the param called 'id' ans store it in a var called 'kek'
-  delete(@Param('id') id: string){
-    return this.usersService.delete(parseInt(id))
+  // The ParseIntPipe is a pipe(a middleware that either transforms data, or validates data. See docs) that converts string/other type to integer. 
+  // It is accepted as the 2nd param to @Param decorator.
+  delete(@Param('id', ParseIntPipe) id: number){
+    return this.usersService.delete(id)
   }
 }

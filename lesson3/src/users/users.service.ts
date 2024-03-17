@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -46,7 +48,9 @@ export class UsersService {
     return this.users.find(user => user.id === id)
   }
 
-  store(user: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}){
+  // We are also swapping the type definition(i.e user: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'})
+  // with a dto here, which is defined as per the imported class at the top
+  store(user: CreateUserDto){
     // this is because we don't want to sort the original array of users so we make a shallow copy of it by using the spread operator
     const usersByHighestId = [...this.users].sort((a,b) => b.id - a.id)
 
@@ -59,7 +63,9 @@ export class UsersService {
     return newUser
   }
 
-  update(id: number, updateUser: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}){
+  // We are also swapping the type definition(i.e updateUser: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'})
+  // with a dto here, which is defined as per the imported class at the top
+  update(id: number, updateUser: UpdateUserDto){
     // let findUser = this.users.find(user => user.id === id)
     // findUser = { id: findUser.id, ...updateUser}
     // return {users: this.users, findUser: findUser}
