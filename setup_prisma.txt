@@ -1,0 +1,19 @@
+In order to setup prisma, do the following-
+
+1. Create a database and re-open it in pgadmin4 so a password is setup for the database
+2. Install prisma using "npm i prisma -D" and then "npm prisma init"
+3. Copy the necessary credentials to the connection string in the .env(modify the "prisma/schema.prisma" file's datasource
+ if needed i.e with neon)
+4. Define all the models in "prisma/schema.prisma"
+5. Use- 
+    npx prisma migrate dev (for dev environment. Will save the sql statements so you can use/view them later)
+      OR
+    npx prisma migrate dev --name init (for dev environment. Will save the sql statements so you can use/view them later under a named migration)
+      OR
+    npx prisma migrate push (for dev environment. Will not save the sql statements)
+      OR
+    npx prisma migrate deploy (to push your change to the online database that is in server)
+6. In order to change the migration.sql, use "npx prisma generate" to re-generate changes to the schema, but in order to apply those changes
+  to the database, you need to use "npx prisma migrate dev --name {name_of_change}" to have the changes applied to the DB tables
+  Hence, if you wanna change the database, edit the "schema.prisma" file, then run "npx prisma generate" and finally,
+  run "npx prisma migrate dev --name {name_of_change}" to get the necessary changes in DB.
