@@ -14,7 +14,7 @@ datasource db {
 }
 
 
-model User {
+model Employee {
   id  Int @id
   name  String
   email String @unique
