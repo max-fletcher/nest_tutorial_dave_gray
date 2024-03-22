@@ -4,23 +4,49 @@ import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class EmployeesService {
-  create(createEmployeeDto: CreateEmployeeDto) {
-    return 'This action adds a new employee';
+  // This is how you use dependency injection in Nest
+  constructor (private readonly databaseService: DatabaseService){}
+  // remember to add async to the function using the database service class. Remember that you used "await" the service so you don't need to
+  // "await" here when you use the service.
+  async create(createEmployeeDto: Prisma.EmployeeCreateInput) {
+    return this.databaseService.employee.create({
+      data: createEmployeeDto
+    })
   }
 
-  findAll(role) {
-    return `This action returns all employees`;
+  // remember to add async to the function using the database service class. Remember that you used "await" the service so you don't need to
+  // "await" here when you use the service.
+  async findAll(role? : "INTERN" | "ENGINEER" | "ADMIN") {
+    if(role) 
+      return this.databaseService.employee.findMany({ 
+        where: { role: role } 
+      })
+
+    return this.databaseService.employee.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} employee`;
+  // remember to add async to the function using the database service class. Remember that you used "await" the service so you don't need to
+  // "await" here when you use the service.
+  async findOne(id: number) {
+    return this.databaseService.employee.findUnique({ 
+      where: { id: id } 
+    })
   }
 
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
+  // remember to add async to the function using the database service class. Remember that you used "await" the service so you don't need to
+  // "await" here when you use the service.
+  async update(id: number, updateEmployeeDto: Prisma.EmployeeUpdateInput) {
+    return this.databaseService.employee.update({
+      where: { id: id },
+      data: updateEmployeeDto
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  // remember to add async to the function using the database service class. Remember that you used "await" the service so you don't need to
+  // "await" here when you use the service.
+  async remove(id: number) {
+    return this.databaseService.employee.delete({
+      where: { id: id } 
+    })
   }
 }
