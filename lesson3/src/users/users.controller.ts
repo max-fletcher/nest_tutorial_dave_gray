@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('users') // '/users' routes
+@Controller('v1/users') // '/users' routes
 export class UsersController {
   // using dependency injection(i.e like what you do in laravel, to inject UsersService into this class)
   constructor(private readonly usersService: UsersService){}
