@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Ip } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 // To say the least, PrismaClient and Prisma is the same. We are using a different alisa that's all
 import { Prisma } from '@prisma/client';
 import { Throttle, SkipThrottle } from '@nestjs/throttler';
+import { MyLoggerService } from 'src/my-logger/my-logger.service';
 
 // Skip throttling for the entire controller(same as : @SkipThrottle({ default: true })). NOTE: This DOES NOT SKIP named rate limiters
 @SkipThrottle()
 @Controller('v1/employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
+  // instantiating an instance of the custom logger you made to this controller. Also, the param is the name of this controller(i.e "EmployeeController")
+  // so we have some context as to where the error is occuring
+  private readonly logger = new MyLoggerService(EmployeesController.name)
 
   @Post()
   // Prisma.EmployeeCreateInput was created by prisma automatically when we ran migration. We swapped out the DTO with this
@@ -21,7 +25,8 @@ export class EmployeesController {
   // For named rate-limiters, you cannot completely skip them but you can override them using @Throttle({ short: { ttl: ???, limit: ??? } })
   @SkipThrottle({ default: false })
   @Get()
-  findAll(@Query('role') role? : "INTERN" | "ENGINEER" | "ADMIN") {
+  findAll(@Ip() ip: string, @Query('role') role? : "INTERN" | "ENGINEER" | "ADMIN") {
+    this.logger.log(`Request for ALL Employees \t${ip}`)
     return this.employeesService.findAll(role);
   }
 
