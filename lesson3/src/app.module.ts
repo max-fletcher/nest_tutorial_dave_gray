@@ -15,7 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
     // Defining throttle/rate-limit logic globally. You can define multiple rate-limits here each with their own set of names and 
     // apply them to different routes(see docs).
     ThrottlerModule.forRoot([
-      // DEFAULT RATE LIMITERS. HAVEN'T FOUND A WAY TO OVERRIDE THEM USING @SkipThrottle
+      // DEFAULT RATE LIMITERS. YOU CAN SKIP THIS USING USING @SkipThrottle OR OVERRIDE THIS USING @Throttle({ default: { ttl: ???, limit: ??? } })
       {
         // ttl: 1000,
         ttl: 60000,
