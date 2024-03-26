@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class EmployeesService {
 
   // remember to add async to the function using the database service class. Remember that you used "await" the service so you don't need to
   // "await" here when you use the service.
-  async findAll(role? : "INTERN" | "ENGINEER" | "ADMIN") {
+  async findAll(role? : Role) {
     if(role) 
       return this.databaseService.employee.findMany({ 
         where: { role: role } 

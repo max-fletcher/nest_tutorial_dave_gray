@@ -1,5 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './all-exceptions.filter';
 
 // USE THIS IF YOU WANT TO IPMLEMENT THE CUSTOM LOGGER YOU MADE GLOBALLY (1)
 // import { MyLoggerService } from './my-logger/my-logger.service';
@@ -14,7 +15,11 @@ async function bootstrap() {
     // }
   );
 
-  // USE THIS IF YOU WANT TO IPMLEMENT THE CUSTOM LOGGER YOU MADE GLOBALLY(3)
+  // IMPORTING AND APPLYING STUFF FOR THE CUSTOM ExceptionFilter WE CREATED(next 2 lines)
+  const { httpAdapter } = app.get(HttpAdapterHost)
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter))
+
+  // USE THIS IF YOU WANT TO IPMLEMENT THE CUSTOM LOGGER YOU MADE GLOBALLY (3)
   // attach the 'MyLoggerService' we created to the app globally(i.e all routes, function etc.)
   // app.useLogger(app.get(MyLoggerService))
 
