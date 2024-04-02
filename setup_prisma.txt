@@ -1,7 +1,7 @@
 In order to setup prisma, do the following-
 
 1. Create a database and re-open it in pgadmin4 so a password is setup for the database
-2. Install prisma using "npm i prisma -D" and then "npm prisma init"
+2. Install prisma using "npm i prisma -D" and then "npx prisma init"
 3. Copy the necessary credentials to the connection string in the .env(modify the "prisma/schema.prisma" file's datasource
  if needed i.e with neon)
 4. Define all the models in "prisma/schema.prisma"
