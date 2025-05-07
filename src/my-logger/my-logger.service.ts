@@ -34,7 +34,7 @@ export class MyLoggerService extends ConsoleLogger {
     // custom logic goes here...
     this.logToFile(entry)
 
-    // override log method
+    // call parent log method
     super.log(message, context)
   }
   // error function is executed when we the application encounters an error
@@ -46,7 +46,7 @@ export class MyLoggerService extends ConsoleLogger {
     // custom logic goes here...
     this.logToFile(entry)
 
-    // override log method
+    // call parent log method
     super.error(message, stackOrContext)
   }
 }

@@ -59,7 +59,7 @@ export class UsersController {
 
   @Patch(':id') // PATCH /users/:id
   // the @Param decorator gets the route param named "id"(as defined in brackets) and stored in a var called "id" which is a string type.
-  // If you said " @Param('id') kek: 'string' ", it would get the param called 'id' ans store it in a var called 'kek'
+  // If you said " @Param('id') kek: 'string' ", it would get the param called 'id' and store it in a var called 'kek'
   // the @Body defines it accepts a request body. The body is stored in a variable called body(type-hinted).
   // The ParseIntPipe is a pipe(a middleware that either transforms data, or validates data. See docs) that converts string/other type to integer. 
   // It is accepted as the 2nd param to @Param decorator.
